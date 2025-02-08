@@ -82,10 +82,9 @@ class GRPOScriptArguments(ScriptArguments):
 
 
 SYSTEM_PROMPT = (
-    "A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant "
-    "first thinks about the reasoning process in the mind and then provides the user with the answer. The reasoning "
-    "process and answer are enclosed within <think> </think> and <answer> </answer> tags, respectively, i.e., "
-    "<think> reasoning process here </think><answer> answer here </answer>"
+    "Please reason step by step, and put your final answer within \\boxed{}. "
+    "The reasoning process should be enclosed within <think> </think> tags, i.e., "
+    "<think> reasoning process here </think> answer here "
 )
 
 
