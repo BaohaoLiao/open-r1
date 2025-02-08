@@ -149,6 +149,7 @@ def main(script_args, training_args, model_args):
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": example["question"]},
             ],
+            "solution": "\\boxed{" + str(example["answer"]) + "}",
         }
 
     dataset = dataset.map(make_conversation)
