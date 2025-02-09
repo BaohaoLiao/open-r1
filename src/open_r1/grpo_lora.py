@@ -174,6 +174,7 @@ def main(script_args, training_args, model_args):
         gpu_memory_utilization = 0.7, #script_args.vllm_gpu_memory_utilization, # Reduce if out of memory
     )
     tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.pad_token_id = tokenizer.eos_token_id
     model = FastLanguageModel.get_peft_model(
         model,
         r = script_args.lora_rank,
