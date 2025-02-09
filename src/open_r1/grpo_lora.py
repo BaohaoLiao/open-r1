@@ -171,7 +171,7 @@ def main(script_args, training_args, model_args):
         load_in_4bit = False, # False for LoRA 16bit
         fast_inference = True, # Enable vLLM fast inference
         max_lora_rank = script_args.lora_rank,
-        gpu_memory_utilization = script_args.vllm_gpu_memory_utilization, # Reduce if out of memory
+        gpu_memory_utilization = 0.7, #script_args.vllm_gpu_memory_utilization, # Reduce if out of memory
     )
     model = FastLanguageModel.get_peft_model(
         model,
