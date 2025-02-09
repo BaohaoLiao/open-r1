@@ -180,7 +180,7 @@ def main(script_args, training_args, model_args):
             "q_proj", "k_proj", "v_proj", "o_proj",
             "gate_proj", "up_proj", "down_proj",
         ], # Remove QKVO if out of memory
-        lora_alpha = script_args.lora_rank,
+        lora_alpha = script_args.lora_rank/4,
         use_gradient_checkpointing = "unsloth", # Enable long context finetuning
         random_state = training_args.seed,
     )
