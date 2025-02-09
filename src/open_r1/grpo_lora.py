@@ -24,13 +24,13 @@ from datasets import load_dataset, load_from_disk
 from transformers import set_seed
 from transformers.trainer_utils import get_last_checkpoint
 
+from unsloth import FastLanguageModel, PatchFastRL
+PatchFastRL("GRPO", FastLanguageModel)
+
 from src.open_r1.configs import GRPOConfig
 from src.open_r1.rewards import accuracy_reward, format_reward, get_cosine_scaled_reward, reasoning_steps_reward
 from src.open_r1.utils.callbacks import get_callbacks
 from trl import GRPOTrainer, ModelConfig, ScriptArguments, TrlParser, get_peft_config
-
-from unsloth import FastLanguageModel, PatchFastRL
-PatchFastRL("GRPO", FastLanguageModel)
 
 
 logger = logging.getLogger(__name__)
