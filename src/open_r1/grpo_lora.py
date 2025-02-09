@@ -184,6 +184,7 @@ def main(script_args, training_args, model_args):
         use_gradient_checkpointing = "unsloth", # Enable long context finetuning
         random_state = training_args.seed,
     )
+    logger.info(model)
 
     #############################
     # Initialize the GRPO trainer
