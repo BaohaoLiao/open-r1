@@ -10,7 +10,7 @@ from transformers import AutoTokenizer
 SYSTEM_PROMPT = "Please reason step by step, and put your final answer within \\boxed{}."
 
 
-def prepare_prompts(dataset, tokenizer):
+def prepare_prompts(dataset, tokenizer, args):
     prompts = []
     for sample in dataset:
         prompt = [
@@ -22,7 +22,10 @@ def prepare_prompts(dataset, tokenizer):
             tokenize=False,
             add_generation_prompt=True
         ))
-    return prompts
+    if args.num_samples != -1:
+        return prompts[:args.num_samples]
+    else:
+        return prompts
 
 
 def generation(client, prompts, args):
@@ -120,8 +123,6 @@ if __name__ == "__main__":
 
     print(f"Loading '{args.hf_dataset}' (split: {args.hf_dataset_split}) dataset...")
     dataset = load_from_disk(args.hf_dataset)[args.hf_dataset_split]
-    if args.num_samples != -1:
-        dataset = dataset[:args.num_samples]
     print("Dataset loaded!")
 
     print(f"Init model")
@@ -134,7 +135,7 @@ if __name__ == "__main__":
     
     print("Generate ...")
     start_time = time.time()
-    prompts = prepare_prompts(dataset, tokenizer)
+    prompts = prepare_prompts(dataset, tokenizer, args)
     generations = generation(client, prompts, args)
     print(f"Finished generaton with {(time.time()-start_time)/60} mins")
 
