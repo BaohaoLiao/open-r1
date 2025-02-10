@@ -144,6 +144,25 @@ if __name__ == "__main__":
     prompts = prepare_prompts(dataset, tokenizer)
     if args.end != -1:
         prompts = prompts[args.start:args.end]
+
+    # Generate every 10 prompts to avoid timeout error, and save
+    all_samples = []
+    out_file = os.path.join(args.output_dir, f"generation_start{args.start}_end{args.end}.jsonl")
+    interval = 10
+    for i in range(0, len(prompts), interval):
+        generations = generation(client, prompts[i:i+interval], args)
+
+        all_samples.extend([{
+            "question": prompts[i+j],
+            "completion": generations[j],
+            "answer": dataset[args.start+i+j]["answer"],
+        } for j in range(len(generations))])
+        save_jsonl(all_samples, out_file)
+
+        print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} mins")
+
+
+    """
     generations = generation(client, prompts, args)
     print(f"Finished generaton with {(time.time()-start_time)/60} mins")
 
@@ -162,3 +181,4 @@ if __name__ == "__main__":
     out_file = os.path.join(args.output_dir, f"generation_start{args.start}_end{args.end}.jsonl")
     save_jsonl(all_samples, out_file)
     print(f"Save to {out_file}")
+    """
