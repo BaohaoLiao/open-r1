@@ -22,10 +22,7 @@ def prepare_prompts(dataset, tokenizer, args):
             tokenize=False,
             add_generation_prompt=True
         ))
-    if args.num_samples != -1:
-        return prompts[:args.num_samples]
-    else:
-        return prompts
+    return prompts
 
 
 def generation(client, prompts, args):
@@ -135,16 +132,18 @@ if __name__ == "__main__":
     
     print("Generate ...")
     start_time = time.time()
-    prompts = prepare_prompts(dataset, tokenizer, args)
+    prompts = prepare_prompts(dataset, tokenizer)
+    if args.num_samples != -1:
+        prompts = prompts[:args.num_samples]
     generations = generation(client, prompts, args)
     print(f"Finished generaton with {(time.time()-start_time)/60} mins")
 
     print("Save generation ...")
     all_samples = []
-    for i, sample in enumerate(dataset):
+    for i in range(len(prompts)):
         all_samples.append({
             "question": prompts[i],
             "completion": generations[i],
-            "answer": sample["answer"],
+            "answer": dataset[i]["answer"],
         })
     save_jsonl(all_samples, os.path.join(args.output_dir, "generation.jsonl"))
