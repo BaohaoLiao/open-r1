@@ -10,7 +10,7 @@ from transformers import AutoTokenizer
 SYSTEM_PROMPT = "Please reason step by step, and put your final answer within \\boxed{}."
 
 
-def prepare_prompts(dataset, tokenizer, args):
+def prepare_prompts(dataset, tokenizer):
     prompts = []
     for sample in dataset:
         prompt = [
