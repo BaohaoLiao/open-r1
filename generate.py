@@ -153,6 +153,7 @@ if __name__ == "__main__":
         generations = generation(client, prompts[i:i+interval], args)
 
         all_samples.extend([{
+            "idx": args.start+i+j,
             "question": prompts[i+j],
             "completion": generations[j],
             "answer": dataset[args.start+i+j]["answer"],
