@@ -104,11 +104,18 @@ if __name__ == "__main__":
         help="Save dir",
     )
     parser.add_argument(
-        "--num-samples",
+        "--start",
+        type=int,
+        default=0,
+        help="for debug",
+    )
+    parser.add_argument(
+        "--end",
         type=int,
         default=-1,
         help="for debug",
     )
+
 
     args = parser.parse_args()
     os.makedirs(args.output_dir, exist_ok=True)
@@ -133,23 +140,23 @@ if __name__ == "__main__":
     print("Generate ...")
     start_time = time.time()
     prompts = prepare_prompts(dataset, tokenizer)
-    if args.num_samples != -1:
-        prompts = prompts[:args.num_samples]
+    if args.end != -1:
+        prompts = prompts[args.start:args.end]
     generations = generation(client, prompts, args)
     print(f"Finished generaton with {(time.time()-start_time)/60} mins")
 
     print("Save generation ...")
     all_samples = []
-    for i in range(len(prompts)):
-        if i == 0:
-            print("Question:", prompts[i])
-            print("Completion:", generations[i])
+    for i in range(args.start, args.start+len(prompts)):
+        if i == args.start:
+            print("Question:", prompts[i-args.start])
+            print("Completion:", generations[i-args.start])
 
         all_samples.append({
-            "question": prompts[i],
-            "completion": generations[i],
+            "question": prompts[i-args.start],
+            "completion": generations[i-args.start],
             "answer": dataset[i]["answer"],
         })
-    out_file = os.path.join(args.output_dir, "generation.jsonl")
+    out_file = os.path.join(args.output_dir, f"generation_start{args.start}_end{args.end}.jsonl")
     save_jsonl(all_samples, out_file)
     print(f"Save to {out_file}")
