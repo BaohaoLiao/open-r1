@@ -147,3 +147,4 @@ if __name__ == "__main__":
             "answer": dataset[i]["answer"],
         })
     save_jsonl(all_samples, os.path.join(args.output_dir, "generation.jsonl"))
+    print(f"Save to {os.path.join(args.output_dir, "generation.jsonl")}")
