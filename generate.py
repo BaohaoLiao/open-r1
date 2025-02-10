@@ -134,6 +134,8 @@ if __name__ == "__main__":
     client = OpenAI(
         api_key=openai_api_key,
         base_url=args.vllm_server_url,
+        timeout=60*60,
+        max_retries=3,
     )
     tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
     
