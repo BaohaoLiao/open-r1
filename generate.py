@@ -119,7 +119,7 @@ if __name__ == "__main__":
     print()
 
     print(f"Loading '{args.hf_dataset}' (split: {args.hf_dataset_split}) dataset...")
-    dataset = load_from_disk(args.hf_dataset, split=args.hf_dataset_split)
+    dataset = load_from_disk(args.hf_dataset)[args.hf_dataset_split]
     if args.num_samples != -1:
         dataset = dataset[:args.num_samples]
     print("Dataset loaded!")
