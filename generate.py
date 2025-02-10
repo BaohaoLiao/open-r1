@@ -150,5 +150,6 @@ if __name__ == "__main__":
             "completion": generations[i],
             "answer": dataset[i]["answer"],
         })
-    save_jsonl(all_samples, os.path.join(args.output_dir, "generation.jsonl"))
-    print(f"Save to {os.path.join(args.output_dir, "generation.jsonl")}")
+    out_file = os.path.join(args.output_dir, "generation.jsonl")
+    save_jsonl(all_samples, out_file)
+    print(f"Save to {out_file}")
