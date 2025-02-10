@@ -141,6 +141,10 @@ if __name__ == "__main__":
     print("Save generation ...")
     all_samples = []
     for i in range(len(prompts)):
+        if i == 0:
+            print("Question:", prompts[i])
+            print("Completion:", generations[i])
+
         all_samples.append({
             "question": prompts[i],
             "completion": generations[i],
