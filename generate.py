@@ -143,7 +143,7 @@ if __name__ == "__main__":
     for i, sample in enumerate(dataset):
         all_samples.append({
             "question": prompts[i],
-            "completion": generations[i]
-            "answer": sample["answer"]
+            "completion": generations[i],
+            "answer": sample["answer"],
         })
     save_jsonl(all_samples, os.path.join(args.output_dir, "generation.jsonl"))
