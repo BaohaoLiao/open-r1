@@ -104,7 +104,7 @@ def main(script_args, training_args, model_args):
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.model_name_or_path, trust_remote_code=model_args.trust_remote_code, use_fast=True
     )
-    assert "qwen" in model_args.model_name_or_path
+    assert "qwen" in model_args.model_name_or_path.lower()
     tokenizer.pad_token = "<|fim_pad|>"
     instruction_template = "<｜User｜>"
     response_template = "<｜Assistant｜>"
