@@ -48,6 +48,7 @@ from transformers.trainer_utils import get_last_checkpoint
 
 from src.open_r1.configs import SFTConfig
 from src.open_r1.utils.callbacks import get_callbacks
+from src.open_r1.models.modeling_flash_sp_qwen import Qwen2ForCausalLM
 from trl import (
     ModelConfig,
     ScriptArguments,
@@ -128,6 +129,16 @@ def main(script_args, training_args, model_args):
     torch_dtype = (
         model_args.torch_dtype if model_args.torch_dtype in ["auto", None] else getattr(torch, model_args.torch_dtype)
     )
+    model = Qwen2ForCausalLM.from_pretrained(
+        model_args.model_name_or_path,
+        torch_dtype=torch_dtype,
+        use_cache=False if training_args.gradient_checkpointing else True,    
+    )
+
+    """
+    torch_dtype = (
+        model_args.torch_dtype if model_args.torch_dtype in ["auto", None] else getattr(torch, model_args.torch_dtype)
+    )
     quantization_config = get_quantization_config(model_args)
     model_kwargs = dict(
         revision=model_args.model_revision,
@@ -139,12 +150,13 @@ def main(script_args, training_args, model_args):
         quantization_config=quantization_config,
     )
     training_args.model_init_kwargs = model_kwargs
+    """
 
     ############################
     # Initialize the SFT Trainer
     ############################
     trainer = SFTTrainer(
-        model=model_args.model_name_or_path,
+        model=model,
         args=training_args,
         train_dataset=dataset,
         eval_dataset=None,
