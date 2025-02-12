@@ -74,6 +74,15 @@ def aime_prompt_fn(line, task_name: str = None):
     )
 
 
+def aime25_prompt_fn(line, task_name: str = None):
+    return Doc(
+        task_name=task_name,
+        query=line["question"],
+        choices=[line["answer"]],
+        gold_index=0,
+    )
+
+
 def gpqa_prompt_fn(line, task_name: str = None):
     """Prompt template adapted from simple-evals: https://github.com/openai/simple-evals/blob/83ed7640a7d9cd26849bcb3340125002ef14abbe/common.py#L14"""
     gold_index = random.randint(0, 3)
@@ -97,6 +106,34 @@ aime24 = LightevalTaskConfig(
     suite=["custom"],
     prompt_function=aime_prompt_fn,
     hf_repo="HuggingFaceH4/aime_2024",
+    hf_subset="default",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=32768,
+    metric=[expr_gold_metric],
+    version=1,
+)
+aime25 = LightevalTaskConfig(
+    name="aime25",
+    suite=["custom"],
+    prompt_function=aime25_prompt_fn,
+    hf_repo="opencompass/AIME2025",
+    hf_subset="default",
+    hf_avail_splits=["train"],
+    evaluation_splits=["train"],
+    few_shots_split=None,
+    few_shots_select=None,
+    generation_size=32768,
+    metric=[expr_gold_metric],
+    version=1,
+)
+aimo2 = LightevalTaskConfig(
+    name="aimo2",
+    suite=["custom"],
+    prompt_function=aime_prompt_fn,
+    hf_repo="justineuro/AIMO2-reference",
     hf_subset="default",
     hf_avail_splits=["train"],
     evaluation_splits=["train"],
@@ -141,8 +178,10 @@ gpqa_diamond = LightevalTaskConfig(
 # Add tasks to the table
 TASKS_TABLE = []
 TASKS_TABLE.append(aime24)
+TASKS_TABLE.append(aime25)
 TASKS_TABLE.append(math_500)
 TASKS_TABLE.append(gpqa_diamond)
+TASKS_TABLE.append(aimo2)
 
 # MODULE LOGIC
 if __name__ == "__main__":
