@@ -31,19 +31,7 @@ def generation(client, prompts, args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run distilabel pipeline for generating responses with DeepSeek R1")
-    parser.add_argument(
-        "--hf-dataset",
-        type=str,
-        required=True,
-        help="HuggingFace dataset to load",
-    )
-    parser.add_argument(
-        "--hf-dataset-split",
-        type=str,
-        default="train",
-        help="Dataset split to use",
-    )
+    parser = argparse.ArgumentParser(description="Bench Speed")
     parser.add_argument(
         "--model",
         type=str,
@@ -71,18 +59,6 @@ if __name__ == "__main__":
         type=int,
         default=8192,
         help="Maximum number of new tokens to generate",
-    )
-    parser.add_argument(
-        "--num-generations",
-        type=int,
-        default=1,
-        help="Number of generations per problem",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=str,
-        required=False,
-        help="Save dir",
     )
     parser.add_argument(
         "--prompt_len",
