@@ -34,7 +34,7 @@ def generation(client, prompts, args):
             temperature=args.temperature,
             top_p=args.top_p,
             max_tokens=args.max_new_tokens,
-            min_tokens=args.max_new_tokens,
+            min_tokens=args.max_new_tokens-1,
             ignore_eos=True,
     ).choices
     responses = sorted(responses, key=lambda x: int(x.index))
