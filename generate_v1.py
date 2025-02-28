@@ -173,6 +173,7 @@ if __name__ == "__main__":
     out_file = os.path.join(args.output_dir, f"generation_start{args.start}_end{args.end}.jsonl")
     interval = args.batch_size
     for i in range(0, len(prompts), interval):
+        print("idx:", i)
         generations = generation(client, prompts[i:i+interval], args)
 
         all_samples.extend([{
