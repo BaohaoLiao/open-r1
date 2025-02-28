@@ -24,11 +24,12 @@ def generation(client, prompts, args):
                 "min_tokens": args.max_new_tokens-1,
                 "ignore_eos": True,
             },
-    ).choices
-    responses = sorted(responses, key=lambda x: int(x.index))
+    )#.choices
+    #responses = sorted(responses, key=lambda x: int(x.index))
     print(responses)
-    generations = [response.text for response in responses]
-    return generations
+    #generations = [response.text for response in responses]
+    #return generations
+    return responses
 
 
 if __name__ == "__main__":
