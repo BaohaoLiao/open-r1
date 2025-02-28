@@ -13,16 +13,7 @@ SYSTEM_PROMPT = "Please reason step by step, and put your final answer within \\
 
 def prepare_prompts(dataset, tokenizer, prompt_len):
     prompts = []
-    for sample in dataset:
-        prompt = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": sample["question"]},
-        ]
-        tmp = tokenizer.apply_chat_template(
-            conversation=prompt,
-            tokenize=False,
-            add_generation_prompt=True
-        )
+    for _ in range(50):
         prompts.append(tokenizer.decode(list(np.arange(1000, 1000+prompt_len))))
     return prompts
 
@@ -142,6 +133,11 @@ if __name__ == "__main__":
         type=int,
         default=0,
     )
+    parser.add_argument(
+        "--batch_size",
+        type=int,
+        default=1,
+    )
 
 
     args = parser.parse_args()
@@ -175,7 +171,7 @@ if __name__ == "__main__":
     # Generate every 10 prompts to avoid timeout error, and save
     all_samples = []
     out_file = os.path.join(args.output_dir, f"generation_start{args.start}_end{args.end}.jsonl")
-    interval = 10
+    interval = args.batch_size
     for i in range(0, len(prompts), interval):
         generations = generation(client, prompts[i:i+interval], args)
 
@@ -187,8 +183,8 @@ if __name__ == "__main__":
         } for j in range(len(generations))])
         save_jsonl(all_samples, out_file)
 
-        print(f"TPS: {len(prompts[i:i+interval]) * args.max_new_tokens / (time.time()-start_time)}")
-        print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} mins")
+    print(f"TPS: {len(prompts) * args.max_new_tokens / (time.time()-start_time)}")
+    print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} mins")
 
 
     """
