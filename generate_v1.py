@@ -26,6 +26,7 @@ def generation(client, prompts, args):
             },
     ).choices
     responses = sorted(responses, key=lambda x: int(x.index))
+    print(responses)
     generations = [response.text for response in responses]
     return generations
 
