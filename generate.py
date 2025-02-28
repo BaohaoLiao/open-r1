@@ -32,6 +32,7 @@ def generation(client, prompts, args):
             temperature=args.temperature,
             top_p=args.top_p,
             max_tokens=args.max_new_tokens,
+            min_tokens=args.max_new_tokens,
     ).choices
     responses = sorted(responses, key=lambda x: int(x.index))
     generations = [response.text for response in responses]
@@ -160,7 +161,7 @@ if __name__ == "__main__":
         } for j in range(len(generations))])
         save_jsonl(all_samples, out_file)
 
-        print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} mins")
+        print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} seconds")
 
 
     """
