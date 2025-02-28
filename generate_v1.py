@@ -28,6 +28,7 @@ def prepare_prompts(dataset, tokenizer, prompt_len):
 
 
 def generation(client, prompts, args):
+    """
     responses = client.completions.create(
             model=args.model.split("/")[-1],
             prompt=prompts,
@@ -36,6 +37,20 @@ def generation(client, prompts, args):
             max_tokens=args.max_new_tokens,
             min_tokens=args.max_new_tokens-1,
             ignore_eos=True,
+    ).choices
+    """
+    from vllm import SamplingParams
+    sampling_params = SamplingParams(
+        temperature=args.temperature,
+        top_p=args.top_p,
+        max_tokens=args.max_new_tokens,
+        min_tokens=args.max_new_tokens-1,
+        ignore_eos=True,
+    )
+    responses = client.completions.create(
+            model=args.model.split("/")[-1],
+            prompt=prompts,
+            sampling_params=sampling_params,
     ).choices
     responses = sorted(responses, key=lambda x: int(x.index))
     generations = [response.text for response in responses]
