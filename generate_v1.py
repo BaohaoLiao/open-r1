@@ -35,6 +35,7 @@ def generation(client, prompts, args):
             top_p=args.top_p,
             max_tokens=args.max_new_tokens,
             min_tokens=args.max_new_tokens,
+            ignore_eos=True,
     ).choices
     responses = sorted(responses, key=lambda x: int(x.index))
     generations = [response.text for response in responses]
