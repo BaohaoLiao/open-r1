@@ -76,10 +76,7 @@ if __name__ == "__main__":
         default=1,
     )
 
-
     args = parser.parse_args()
-    os.makedirs(args.output_dir, exist_ok=True)
-
     print("\nRunning with arguments:")
     for arg, value in vars(args).items():
         print(f"  {arg}: {value}")
@@ -90,7 +87,7 @@ if __name__ == "__main__":
     client = OpenAI(
         api_key=openai_api_key,
         base_url=args.vllm_server_url,
-        timeout=60*60,
+        timeout=60,
         max_retries=3,
     )
     tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
