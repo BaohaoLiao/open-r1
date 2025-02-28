@@ -161,7 +161,7 @@ if __name__ == "__main__":
         } for j in range(len(generations))])
         save_jsonl(all_samples, out_file)
 
-        print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} seconds")
+        print(f"Generate from {args.start} to {args.start+i+interval} with {(time.time()-start_time)/60} mins")
 
 
     """
