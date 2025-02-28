@@ -149,7 +149,7 @@ if __name__ == "__main__":
     
     print("Generate ...")
     start_time = time.time()
-    prompts = prepare_prompts(dataset, tokenizer)
+    prompts = prepare_prompts(dataset, tokenizer, args.prompt_len)
     if args.end != -1:
         prompts = prompts[args.start:args.end]
 
