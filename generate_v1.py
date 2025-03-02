@@ -1,6 +1,7 @@
 import os
 import time
 import argparse
+import openai
 from openai import OpenAI
 from transformers import AutoTokenizer
 import numpy as np
@@ -41,10 +42,16 @@ if __name__ == "__main__":
         help="Model name to use for generation",
     )
     parser.add_argument(
-        "--vllm-server-url",
+        "--server",
+        type=str,
+        default="vllm",
+        help="vllm or sglang",
+    )
+    parser.add_argument(
+        "--server-url",
         type=str,
         default="http://localhost:8000/v1",
-        help="URL of the vLLM server",
+        help="URL of the server",
     )
     parser.add_argument(
         "--temperature",
@@ -86,12 +93,20 @@ if __name__ == "__main__":
 
     print(f"Init model")
     openai_api_key = "EMPTY"
-    client = OpenAI(
-        api_key=openai_api_key,
-        base_url=args.vllm_server_url,
-        timeout=60*60,
-        max_retries=3,
-    )
+    if args.server == "vllm":
+        client = OpenAI(
+            api_key=openai_api_key,
+            base_url=args.server_url,
+            timeout=60*60,
+            max_retries=3,
+        )
+    elif args.server == "sglang":
+        client = openai.Client(
+            api_key=openai_api_key,
+            base_url=args.server_url,
+            timeout=60*60,
+            max_retries=3,
+        )
     tokenizer = AutoTokenizer.from_pretrained(args.model, trust_remote_code=True)
     
     print("Generate ...")
